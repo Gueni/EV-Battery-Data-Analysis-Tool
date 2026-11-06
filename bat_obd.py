@@ -545,7 +545,7 @@ class EVBatteryAnalyzer:
             )
             self.combined_figures.append(soc_comp_fig)
     
-    def save_combined_report(self, output_dir="D:\WORKSPACE\PyModules\EV Battery Data Analysis Tool\output", filename="battery_analysis_report.html"):
+    def save_combined_report(self, output_dir=os.path.join(os.path.dirname(os.path.abspath(__file__)), "output"), filename="battery_analysis_report.html"):
         """Save all plots and report as a single HTML file"""
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
@@ -576,9 +576,10 @@ class EVBatteryAnalyzer:
 # Example usage
 if __name__ == "__main__":
     # Initialize analyzer with your data files
+    data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
     analyzer = EVBatteryAnalyzer(
-        charger_file=r"D:\WORKSPACE\PyModules\EV Battery Data Analysis Tool\2023051609_charger.csv",
-        obd_file=r"D:\WORKSPACE\PyModules\EV Battery Data Analysis Tool\2023051609_OBD.csv"
+        charger_file=os.path.join(data_dir, "2023051609_charger.csv"),
+        obd_file=os.path.join(data_dir, "2023051609_OBD.csv")
     )
     
     # Perform analysis

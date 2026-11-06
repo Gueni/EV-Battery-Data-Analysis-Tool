@@ -1,87 +1,83 @@
 # EV Battery Data Analysis Tool
 
-![EV Battery Analysis Demo](assets/demo.gif) <!-- Replace with your actual GIF path -->
+![EV Battery Analysis Demo](images/demo.gif)
 
-A comprehensive Python tool for analyzing electric vehicle battery data from charger and OBD sources, with interactive visualization capabilities.
+A Python tool for analysing electric-vehicle battery data logged from a charger
+and from the OBD port, with interactive Plotly charts collected into a single
+HTML report.
 
 ## Features
 
-- **Data Loading**: Supports loading charger and OBD data from CSV files
-- **Comprehensive Analysis**:
-  - Charging session metrics (duration, SOC change, power, etc.)
-  - Battery health indicators (internal resistance, voltage sag, etc.)
+- **Data loading**: charger and OBD logs from CSV files
+- **Analysis**:
+  - Charging session metrics (duration, SOC change, power, …)
+  - Battery health indicators (internal resistance, voltage sag, …)
   - Charging phase detection (CC/CV)
-- **Interactive Visualization**: Plotly-powered interactive charts
-- **Unified Report**: Single HTML output with all analysis results and visualizations
+- **Interactive visualisation**: Plotly charts
+- **Unified report**: one HTML file with all results and plots
 
 ## Installation
 
-1. Clone the repository:
 ```bash
 git clone https://github.com/gueni/ev-battery-analysis-tool.git
 cd ev-battery-analysis-tool
-```
-Install required dependencies:
-
-```bash
 pip install -r requirements.txt
 ```
 
-Usage
+## Usage
+
+Run the example on the sample logs in `data/`; the report is written to
+`output/battery_analysis_report.html`:
 
 ```bash
-from ev_battery_analyzer import EVBatteryAnalyzer
+python bat_obd.py
+```
 
-# Initialize with your data files
-analyzer    = EVBatteryAnalyzer(
-    charger_file    ="path/to/charger_data.csv",
-    obd_file        ="path/to/obd_data.csv"
+Or use the class from your own script:
+
+```python
+from bat_obd import EVBatteryAnalyzer
+
+analyzer = EVBatteryAnalyzer(
+    charger_file="data/2023051609_charger.csv",
+    obd_file="data/2023051609_OBD.csv",
 )
-
-# Perform analysis
 analyzer.analyze_data()
-
-# Save combined report
 analyzer.save_combined_report(output_dir="results")
 ```
 
-## Example Output
+## Example output
 
-The tool generates a comprehensive HTML report containing:
+The HTML report contains:
 
-- Summary statistics and battery health assessment
+- Summary statistics and a battery health assessment
+- Time-series plots of voltage, current and SOC
+- Power charts
+- Voltage–current characteristics
+- Charger vs. OBD comparison plots (when both files are given)
 
-- Interactive time-series plots of voltage, current, and SOC
+A generated example is in [`output/battery_analysis_report.html`](output/battery_analysis_report.html).
 
-- Power consumption charts
+## Data format
 
-- Voltage-current characteristics
+Both the charger and the OBD CSV need:
 
-- Comparison plots (when both charger and OBD data are available)
+- a `datetime` or `timestamp` column
+- `voltage` (V)
+- `current` (A)
+- `soc` (state of charge, %)
+- optionally `temperature` (°C)
 
-## Data Format Requirements
-### Charger Data CSV should contain:
-- datetime or timestamp column
+## Repository layout
 
-- voltage (in volts)
-
-- current (in amps)
-
-- soc (state of charge in percent)
-
-### OBD Data CSV should contain:
-- datetime or timestamp column
-
-- voltage (in volts)
-
-- current (in amps)
-
-- soc (state of charge in percent)
-
-- (Optional) temperature (in °C)
-
-## Contributing
-Contributions are welcome! Please open an issue or submit a pull request for any improvements.
+```
+0013_ev_battery/
+├── bat_obd.py          # EVBatteryAnalyzer + example run
+├── requirements.txt    # pandas, numpy, plotly
+├── data/               # Sample charger and OBD logs (2023-05-16, sessions 01 and 09)
+├── output/             # Generated HTML report
+└── images/             # Demo GIF used in this README
+```
 
 ## License
 
